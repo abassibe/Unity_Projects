@@ -4,34 +4,48 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
-
     public float speed;
 
+    private Rigidbody2D body;
     Vector2 direction;
+
+    string shooter;
 
     void Start()
     {
-        GetComponent<Renderer>().enabled = false;
+        body = GetComponent<Rigidbody2D>();
+        // GetComponent<Renderer>().enabled = false;
+        // GetComponent<BoxCollider2D>().enabled = false;
     }
 
-    public void go(Vector2 pos, Vector2 dir, Quaternion rotation)
+    public void go(Vector2 pos, Vector2 dir, string t)
     {
-        GetComponent<Renderer>().enabled = true;
-        transform.position = pos;
-        //transform.rotation = rotation;
+        gameObject.SetActive(true);
+        shooter = t;
+        // GetComponent<Renderer>().enabled = true;
+        // GetComponent<BoxCollider2D>().enabled = true;
         direction = dir;
     }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        collider.GetComponent<Character>().isHitten();
+        if (collider.tag == "ammo" || collider.tag == shooter || collider.tag == "weapon")
+        {
+            // GameObject.Destroy(this);
+            return;
+        }        //if (collider.GetComponent<Missile>() != null)
+        //   return;
+        var character = collider.GetComponent<Character>();
+        if (!character)
+            gameObject.SetActive(false);
+        else
+            character.isHitten();
+        GameObject.Destroy(this);
     }
 
     void Update()
     {
         if (gameObject.activeSelf)
-        {
-            transform.Translate(direction * speed);
-        }
+            body.velocity = direction * speed * 30;
     }
 }

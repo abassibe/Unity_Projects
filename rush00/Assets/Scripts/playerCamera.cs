@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class playerCamera : MonoBehaviour
 {
-    public GameObject actualPlayer;
 
-    private Vector3 offset;
-
-    void Start()
+    public GameObject hero;
+    public float time;
+    void Update()
     {
-        offset = transform.position - actualPlayer.transform.position;
-    }
-
-    void LateUpdate()
-    {
-        transform.position = actualPlayer.transform.position + offset;
+        time = (Time.time % 7) / 7f;
+        Camera.main.backgroundColor = Color.HSVToRGB(time, 0.5f, 0.5f);
+        if (hero)
+            transform.position = new Vector3(
+                hero.transform.position.x,
+                hero.transform.position.y,
+                -10f
+            );
     }
 }
