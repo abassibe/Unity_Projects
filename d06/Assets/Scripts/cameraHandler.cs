@@ -13,13 +13,28 @@ public class cameraHandler : MonoBehaviour
 
     private Rigidbody rigidBodyCam;
 
+    public AudioSource panicMusic;
+    public AudioSource normalMusic;
+
     void Start()
     {
         rigidBodyCam = GetComponent<Rigidbody>();
+        normalMusic.loop = true;
+        panicMusic.loop = true;
     }
 
     void FixedUpdate()
     {
+        if (!panicMusic.isPlaying && progressBar.detectionPercent >= 70)
+        {
+            normalMusic.Stop();
+            panicMusic.Play();
+        }
+        else if (!normalMusic.isPlaying && progressBar.detectionPercent < 70)
+        {
+            normalMusic.Play();
+            panicMusic.Stop();
+        }
         lastMouse = Input.mousePosition - lastMouse;
         lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
         lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);

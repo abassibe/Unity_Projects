@@ -51,7 +51,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\alarm.cs" />
+     <Compile Include="Assets\Scripts\blinkingLigth.cs" />
      <Compile Include="Assets\Scripts\cameraHandler.cs" />
+     <Compile Include="Assets\Scripts\particle.cs" />
+     <Compile Include="Assets\Scripts\progressBar.cs" />
      <None Include="Assets\Stealth Assets\Shaders\ReflectiveDiffuseSpecTransp.shader" />
  <Reference Include="UnityEngine.UIAutomation">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>
