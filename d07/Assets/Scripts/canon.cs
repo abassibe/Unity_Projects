@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class canon : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class canon : MonoBehaviour
 
     public GameObject gunShot;
 
-    public GameObject gunImpact;
+    public GameObject gunImpact; // TODO: Rajouter au point d'impact
 
     public GameObject missileShot;
 
@@ -21,10 +22,19 @@ public class canon : MonoBehaviour
     public AudioSource missMusic;
 
     public AudioClip tst;
+
     private float limitSound;
+
+    public GameObject body;
+
+    public Text lifeLeft;
+
+    public Text ammoLeft;
 
     void Update()
     {
+        lifeLeft.text = "Life point\n" + body.GetComponent<body>().HP.ToString();
+        ammoLeft.text = "Missiles left\n" + missile.ToString();
         transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X"), 0) * Time.deltaTime * speed);
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         if (Input.GetMouseButton(0))
@@ -36,8 +46,7 @@ public class canon : MonoBehaviour
             }
             Vector3 fwd = transform.TransformDirection(Vector3.forward);
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, fwd, out hit, 120))
-                Debug.DrawLine(transform.position, hit.point, Color.red);
+            Physics.Raycast(transform.position, fwd, out hit, 80);
             GameObject cpy1 = Instantiate(gunShot, gunShot.transform.position, Quaternion.identity);
             ParticleSystem.EmissionModule em1 = cpy1.GetComponent<ParticleSystem>().emission;
             em1.enabled = true;
@@ -52,8 +61,7 @@ public class canon : MonoBehaviour
             missileMusic.Play();
             Vector3 fwd = transform.TransformDirection(Vector3.forward);
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, fwd, out hit, 60))
-                Debug.DrawLine(transform.position, hit.point, Color.red);
+            Physics.Raycast(transform.position, fwd, out hit, 60);
             GameObject cpy1 = Instantiate(gunShot, gunShot.transform.position, Quaternion.identity);
             ParticleSystem.EmissionModule em1 = cpy1.GetComponent<ParticleSystem>().emission;
             em1.enabled = true;
@@ -64,5 +72,12 @@ public class canon : MonoBehaviour
             Destroy(cpy, 1);
             missile--;
         }
+    }
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.name == "Gun Shoot(Clone)")
+            body.GetComponent<body>().HP -= 5;
+        if (col.gameObject.name == "MissileShoot(Clone)")
+            body.GetComponent<body>().HP -= 30;
     }
 }

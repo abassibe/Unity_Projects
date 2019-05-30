@@ -20,7 +20,7 @@ public class mainCam : MonoBehaviour
 
     public AudioSource panicMusic;
 
-    public int HP = 100;
+    public GameObject body;
 
     void Start()
     {
@@ -29,12 +29,12 @@ public class mainCam : MonoBehaviour
 
     private void Update()
     {
-        if (HP < 30 && !panicMusic.isPlaying)
+        if (body.GetComponent<body>().HP < 30 && !panicMusic.isPlaying)
         {
             normalMusic.Stop();
             panicMusic.Play();
         }
-        Vector2 scroll = scroll = Input.mouseScrollDelta;
+        Vector2 scroll = Input.mouseScrollDelta;
         if (scroll.y > 0 && offsetPosition.z < -5)
         {
             if (offsetPosition.z + scroll.y >= -5)

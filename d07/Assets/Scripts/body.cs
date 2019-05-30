@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class body : MonoBehaviour
 {
@@ -10,15 +11,12 @@ public class body : MonoBehaviour
 
     public float boost;
 
-    // Use this for initialization
-    void Start()
-    {
+    public int HP = 100;
 
-    }
-
-    // Update is called once per frame
     void FixedUpdate()
     {
+        if (HP <= 0)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         if (Input.GetKey(KeyCode.W))
         {
             if (Input.GetKey(KeyCode.LeftShift) && boost > 0)
@@ -45,5 +43,13 @@ public class body : MonoBehaviour
             transform.Rotate(0, rotate, 0);
         if (boost < 100)
             boost += 0.3f;
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.name == "Gun Shoot(Clone)")
+            HP -= 5;
+        if (col.gameObject.name == "MissileShoot(Clone)")
+            HP -= 30;
     }
 }
